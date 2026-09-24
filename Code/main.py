@@ -56,13 +56,16 @@ def main():
     subject_data = group_trajectories_by_subject(all_files, labels)
     verify_data_files(subject_data)
 
-    compute_model_stats(args.output_dir)
+    if os.environ.get("SKIP_MODEL_STATS", "0") != "1":
+        compute_model_stats(args.output_dir)
+    else:
+        print("Skipping computational complexity benchmark (SKIP_MODEL_STATS=1)")
 
     all_subjects = list(subject_data.keys())
-    total_em = sum(1 for s in all_subjects if subject_data[s]['label'] == 1)
-    total_hp = sum(1 for s in all_subjects if subject_data[s]['label'] == 0)
+    total_mdd = sum(1 for s in all_subjects if subject_data[s]['label'] == 1)
+    total_hc = sum(1 for s in all_subjects if subject_data[s]['label'] == 0)
     print("\nOriginal subject distribution:")
-    print(f"Total subjects - EM: {total_em}, HP: {total_hp}")
+    print(f"Total subjects - MDD: {total_mdd}, HC: {total_hc}")
 
     folds = load_train_val_folds(args.fold_json)
     output_file_path = os.path.join(args.output_dir, 'overall_results.txt')
