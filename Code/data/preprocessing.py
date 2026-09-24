@@ -7,18 +7,20 @@ from config import N_TRAJECTORIES
 
 
 def group_trajectories_by_subject(files, labels):
+    """Group trajectories by subject."""
     subject_data = {}
-    removed_em = 0
-    removed_hp = 0
+    removed_mdd = 0
+    removed_hc = 0
 
     for file_path, label in zip(files, labels):
         with open(file_path, 'r') as f:
             traj_length = len(f.readlines())
             if traj_length <= 2:
-                if 'EM' in file_path:
-                    removed_em += 1
+                # Positive: MDD; negative: HC
+                if 'MDD' in file_path:
+                    removed_mdd += 1
                 else:
-                    removed_hp += 1
+                    removed_hc += 1
                 continue
 
         parts = file_path.split(os.sep)
@@ -36,8 +38,8 @@ def group_trajectories_by_subject(files, labels):
         subject_data[subject_folder][emotion_type].append(trajectory_data)
 
     print(f"\nRemoved trajectories with length <= 2:")
-    print(f"EM: {removed_em} trajectories removed")
-    print(f"HP: {removed_hp} trajectories removed")
+    print(f"MDD: {removed_mdd} trajectories removed")
+    print(f"HC: {removed_hc} trajectories removed")
 
     return subject_data
 
@@ -95,6 +97,7 @@ def create_sliding_window_samples(subject_data, N, target_len=30):
 
 
 def verify_data_files(subject_data):
+    """Verify trajectory files and static-feature CSVs exist and are well-formed."""
     print("\nVerifying data files...")
     for subject_id, data in subject_data.items():
         sample_traj = data['sad'][0]['file']
@@ -127,11 +130,25 @@ def verify_data_files(subject_data):
 
 
 def load_all_files(data_root):
+    """Load all trajectory file paths and labels.
+
+    Expected layout: dataset/{MDD,HC}/...
+    Label convention: positive(1)=MDD, negative(0)=HC.
+    """
     all_files = []
     labels = []
 
-    for folder_name in ['EM', 'HP']:
+    class_folders = [
+        ('MDD', 1.0),
+        ('HC', 0.0),
+    ]
+    found_any = False
+
+    for folder_name, label in class_folders:
         folder_path = os.path.join(data_root, folder_name)
+        if not os.path.isdir(folder_path):
+            continue
+        found_any = True
 
         for dirpath, dirnames, filenames in os.walk(folder_path):
             if "Fixation point" in dirpath:
@@ -139,21 +156,28 @@ def load_all_files(data_root):
                     if f != '.DS_Store':
                         file_path_txt = os.path.join(dirpath, f)
                         all_files.append(file_path_txt)
-                        labels.append(1.0 if folder_name == 'EM' else 0.0)
+                        labels.append(label)
+
+    if not found_any:
+        raise FileNotFoundError(
+            f"MDD/HC subdirectories not found under {data_root}"
+        )
 
     return all_files, labels
 
 
 def load_folds(json_path):
+    """Load fold JSON and return all fold info (train/val/test)."""
     with open(json_path, 'r') as f:
         folds = json.load(f)
     print(f"Loaded {len(folds)} folds from {json_path}")
     for fold in folds:
         assert 'test_subjects' in fold, (
-            f"Fold {fold['fold_idx']} 缺少 test_subjects，请使用 regenerate_folds.py 生成新 JSON"
+            f"Fold {fold['fold_idx']} is missing test_subjects"
         )
     return folds
 
 
 def load_train_val_folds(json_path):
+    """Backward-compatible alias for load_folds."""
     return load_folds(json_path)
