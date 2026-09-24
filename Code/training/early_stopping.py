@@ -1,5 +1,5 @@
 class ImprovedEarlyStopping:
-    """基于滑动窗口综合分数的早停，与 best model 选择使用同一 score。"""
+    """Early stopping on a sliding-window composite score (same score for best-model selection)."""
 
     def __init__(self, patience=50, window_size=5, min_delta=1e-4,
                  acc_weight=0.4, pr_auc_weight=0.3, f1_weight=0.3):
@@ -39,7 +39,7 @@ class ImprovedEarlyStopping:
         )
 
     def step(self, val_acc, val_pr_auc, val_f1, epoch):
-        """返回 (should_stop, is_best, score)"""
+        """Return (should_stop, is_best, score)."""
         score = self.compute_score(val_acc, val_pr_auc, val_f1)
         is_best = False
 
