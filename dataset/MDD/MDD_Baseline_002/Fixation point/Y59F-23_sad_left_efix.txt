@@ -1,5 +1,0 @@
-Start Time: 940173, End Time: 940460, Duration: 288, X Mean: 514.7, Y Mean: 374.3, Pupil Size: 1130.0
-Start Time: 940475, End Time: 940668, Duration: 194, X Mean: 492.4, Y Mean: 390.7, Pupil Size: 1098.0
-Start Time: 940690, End Time: 941060, Duration: 371, X Mean: 547.8, Y Mean: 394.9, Pupil Size: 1120.0
-Start Time: 941084, End Time: 941446, Duration: 363, X Mean: 486.2, Y Mean: 399.1, Pupil Size: 1190.0
-Start Time: 941465, End Time: 943143, Duration: 1679, X Mean: 539.3, Y Mean: 402.1, Pupil Size: 1285.0

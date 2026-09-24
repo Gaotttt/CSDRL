@@ -1,9 +1,0 @@
-Start Time: 1114061, End Time: 1114339, Duration: 279, X Mean: 518.6, Y Mean: 372.8, Pupil Size: 1253.0
-Start Time: 1114353, End Time: 1114584, Duration: 232, X Mean: 555.3, Y Mean: 373.9, Pupil Size: 1146.0
-Start Time: 1114607, End Time: 1114980, Duration: 374, X Mean: 496.3, Y Mean: 367.9, Pupil Size: 1181.0
-Start Time: 1115004, End Time: 1115230, Duration: 227, X Mean: 569.9, Y Mean: 370.7, Pupil Size: 1336.0
-Start Time: 1115257, End Time: 1115694, Duration: 438, X Mean: 488.2, Y Mean: 383.2, Pupil Size: 1404.0
-Start Time: 1115718, End Time: 1115964, Duration: 247, X Mean: 572.3, Y Mean: 379.8, Pupil Size: 1375.0
-Start Time: 1115991, End Time: 1116222, Duration: 232, X Mean: 498.0, Y Mean: 383.9, Pupil Size: 1368.0
-Start Time: 1116508, End Time: 1116711, Duration: 204, X Mean: 528.9, Y Mean: 385.7, Pupil Size: 1417.0
-Start Time: 1116734, End Time: 1117074, Duration: 341, X Mean: 490.1, Y Mean: 384.8, Pupil Size: 1392.0
