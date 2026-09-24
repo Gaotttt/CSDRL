@@ -91,24 +91,24 @@ def build_samples(subject_ids, subject_data):
 
 
 def print_sample_distribution(train_samples, val_samples, test_samples):
-    train_em, train_hp = count_label_dist(train_samples)
-    val_em, val_hp = count_label_dist(val_samples)
-    test_em, test_hp = count_label_dist(test_samples)
+    train_mdd, train_hc = count_label_dist(train_samples)
+    val_mdd, val_hc = count_label_dist(val_samples)
+    test_mdd, test_hc = count_label_dist(test_samples)
 
     print("\nSample-level distribution:")
     print("Training samples:")
-    print(f"EM: {train_em} ({train_em / (train_em + train_hp):.2f})")
-    print(f"HP: {train_hp} ({train_hp / (train_em + train_hp):.2f})")
+    print(f"MDD: {train_mdd} ({train_mdd / (train_mdd + train_hc):.2f})")
+    print(f"HC: {train_hc} ({train_hc / (train_mdd + train_hc):.2f})")
     print(f"Total: {len(train_samples)}")
 
     print("Validation samples (early stopping / best model):")
-    print(f"EM: {val_em} ({val_em / (val_em + val_hp):.2f})")
-    print(f"HP: {val_hp} ({val_hp / (val_em + val_hp):.2f})")
+    print(f"MDD: {val_mdd} ({val_mdd / (val_mdd + val_hc):.2f})")
+    print(f"HC: {val_hc} ({val_hc / (val_mdd + val_hc):.2f})")
     print(f"Total: {len(val_samples)}")
 
     print("Test samples (final evaluation):")
-    print(f"EM: {test_em} ({test_em / (test_em + test_hp):.2f})")
-    print(f"HP: {test_hp} ({test_hp / (test_em + test_hp):.2f})")
+    print(f"MDD: {test_mdd} ({test_mdd / (test_mdd + test_hc):.2f})")
+    print(f"HC: {test_hc} ({test_hc / (test_mdd + test_hc):.2f})")
     print(f"Total: {len(test_samples)}")
 
 
@@ -391,24 +391,24 @@ def save_misclassified_samples(fold_result, misclassified_dir):
         f.write("=" * 80 + "\n\n")
 
         total_errors = len(samples)
-        em_to_hp = sum(1 for s in samples if s['true_label'] == 1 and s['predicted_label'] == 0)
-        hp_to_em = sum(1 for s in samples if s['true_label'] == 0 and s['predicted_label'] == 1)
+        mdd_to_hc = sum(1 for s in samples if s['true_label'] == 1 and s['predicted_label'] == 0)
+        hc_to_mdd = sum(1 for s in samples if s['true_label'] == 0 and s['predicted_label'] == 1)
 
         f.write("Summary Statistics:\n")
         f.write("-" * 40 + "\n")
         f.write(f"Total misclassified samples: {total_errors}\n")
-        f.write(f"EM predicted as HP: {em_to_hp}\n")
-        f.write(f"HP predicted as EM: {hp_to_em}\n")
+        f.write(f"MDD predicted as HC: {mdd_to_hc}\n")
+        f.write(f"HC predicted as MDD: {hc_to_mdd}\n")
         f.write("\n" + "=" * 80 + "\n\n")
 
         for idx, sample in enumerate(samples, 1):
             f.write(f"Misclassified Sample {idx}:\n")
             f.write("-" * 40 + "\n")
-            f.write(f"True Label: {'EM' if sample['true_label'] == 1 else 'HP'}\n")
-            f.write(f"Predicted Label: {'EM' if sample['predicted_label'] == 1 else 'HP'}\n")
+            f.write(f"True Label: {'MDD' if sample['true_label'] == 1 else 'HC'}\n")
+            f.write(f"Predicted Label: {'MDD' if sample['predicted_label'] == 1 else 'HC'}\n")
             f.write(
-                f"Prediction Probabilities - HP: {sample['prediction_prob'][0]:.4f}, "
-                f"EM: {sample['prediction_prob'][1]:.4f}\n\n")
+                f"Prediction Probabilities - HC: {sample['prediction_prob'][0]:.4f}, "
+                f"MDD: {sample['prediction_prob'][1]:.4f}\n\n")
 
     print(f"Test misclassified samples for fold {fold_idx + 1} saved to {misclassified_file}")
 
