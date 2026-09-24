@@ -7,7 +7,6 @@ from config import N_TRAJECTORIES
 
 
 def group_trajectories_by_subject(files, labels):
-    """将轨迹按被试分组"""
     subject_data = {}
     removed_em = 0
     removed_hp = 0
@@ -96,7 +95,6 @@ def create_sliding_window_samples(subject_data, N, target_len=30):
 
 
 def verify_data_files(subject_data):
-    """验证轨迹文件与静态特征 CSV 是否存在且格式正确"""
     print("\nVerifying data files...")
     for subject_id, data in subject_data.items():
         sample_traj = data['sad'][0]['file']
@@ -129,7 +127,6 @@ def verify_data_files(subject_data):
 
 
 def load_all_files(data_root):
-    """加载所有轨迹文件路径及标签"""
     all_files = []
     labels = []
 
@@ -148,7 +145,6 @@ def load_all_files(data_root):
 
 
 def load_folds(json_path):
-    """读取 json 文件，返回所有 fold 信息（含 train/val/test）"""
     with open(json_path, 'r') as f:
         folds = json.load(f)
     print(f"Loaded {len(folds)} folds from {json_path}")
@@ -160,5 +156,4 @@ def load_folds(json_path):
 
 
 def load_train_val_folds(json_path):
-    """兼容旧接口"""
     return load_folds(json_path)
