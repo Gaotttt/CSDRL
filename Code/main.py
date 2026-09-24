@@ -1,4 +1,4 @@
-"""主程序入口：加载数据并执行 K 折交叉验证训练。"""
+"""Main entry: load data and run K-fold cross-validation training."""
 
 import argparse
 import os
@@ -26,12 +26,16 @@ from utils.model_stats import compute_model_stats
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="眼动轨迹 EM/HP 分类模型训练")
-    parser.add_argument("--data-root", default=DEFAULT_DATA_ROOT, help="预处理数据根目录")
-    parser.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR, help="输出目录")
-    parser.add_argument("--fold-json", default=DEFAULT_FOLD_JSON, help="K折划分 JSON 文件路径")
-    parser.add_argument("--tensorboard-dir", default=DEFAULT_TENSORBOARD_DIR, help="TensorBoard 日志目录")
-    parser.add_argument("--seed", type=int, default=RANDOM_SEED, help="随机种子")
+    parser = argparse.ArgumentParser(
+        description="Eye-tracking trajectory classification training"
+    )
+    parser.add_argument("--data-root", default=DEFAULT_DATA_ROOT, help="Preprocessed data root")
+    parser.add_argument("--output-dir", default=DEFAULT_OUTPUT_DIR, help="Output directory")
+    parser.add_argument("--fold-json", default=DEFAULT_FOLD_JSON, help="K-fold split JSON path")
+    parser.add_argument(
+        "--tensorboard-dir", default=DEFAULT_TENSORBOARD_DIR, help="TensorBoard log directory"
+    )
+    parser.add_argument("--seed", type=int, default=RANDOM_SEED, help="Random seed")
     return parser.parse_args()
 
 
@@ -66,7 +70,7 @@ def main():
     results = run_kfold_training(folds, subject_data, args.output_dir, writer)
     writer.close()
 
-    print("K折交叉验证完成")
+    print("K-fold cross-validation finished")
     save_final_results(results, args.output_dir, output_file_path)
 
 
