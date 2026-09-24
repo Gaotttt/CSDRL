@@ -74,7 +74,7 @@ def adjust_sparsity_lambda(epoch):
 
 
 def lr_lambda_epoch(epoch):
-    """线性 warm-up + 余弦退火，作用于各 param group 的基础学习率。"""
+    """Linear warm-up + cosine annealing over each param group's base LR."""
     if epoch < LR_WARMUP_EPOCHS:
         return (epoch + 1) / LR_WARMUP_EPOCHS
     progress = min((epoch - LR_WARMUP_EPOCHS) / max(1, NUM_EPOCHS - LR_WARMUP_EPOCHS), 1.0)
@@ -113,7 +113,7 @@ def print_sample_distribution(train_samples, val_samples, test_samples):
 
 
 def evaluate_loader(model, data_loader, criterion, device, samples, collect_misclassified=False):
-    """在指定数据加载器上评估模型"""
+    """Evaluate the model on the given data loader."""
     model.eval()
     total_loss = 0
     total_reg_loss = 0
@@ -439,7 +439,7 @@ def _print_metric_summary(title, summary, keys):
 
 
 def run_kfold_training(folds, subject_data, base_output_dir, writer):
-    """执行 K 折交叉验证训练"""
+    """Run K-fold cross-validation training."""
     k_folds = len(folds)
     fold_results = []
 
@@ -493,7 +493,7 @@ def run_kfold_training(folds, subject_data, base_output_dir, writer):
 
 
 def save_final_results(results, base_output_dir, output_file_path):
-    """保存 K 折交叉验证的最终 test 集结果（均值 ± 标准差）"""
+    """Save final K-fold test-set results (mean ± std)."""
     sample_summary = results['sample_summary']
     subject_summary = results['subject_summary']
 
