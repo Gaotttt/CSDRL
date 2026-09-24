@@ -14,7 +14,7 @@ def _to_numpy(labels, predictions):
 
 
 def calculate_pr_auc(labels, predictions):
-    """计算 PR-AUC (Average Precision)"""
+    """Compute PR-AUC (Average Precision)."""
     labels, predictions = _to_numpy(labels, predictions)
     try:
         if len(set(labels)) < 2:
@@ -25,7 +25,7 @@ def calculate_pr_auc(labels, predictions):
 
 
 def calculate_roc_auc(labels, predictions):
-    """计算 ROC-AUC"""
+    """Compute ROC-AUC."""
     labels, predictions = _to_numpy(labels, predictions)
     try:
         if len(set(labels)) < 2:
@@ -36,12 +36,12 @@ def calculate_roc_auc(labels, predictions):
 
 
 def calculate_auc(labels, predictions):
-    """兼容旧接口，返回 PR-AUC"""
+    """Legacy alias; returns PR-AUC."""
     return calculate_pr_auc(labels, predictions)
 
 
 def compute_classification_metrics(labels, probs, threshold=DECISION_THRESHOLD):
-    """计算样本级分类指标（固定阈值 threshold，默认 0.5）"""
+    """Compute sample-level classification metrics (fixed threshold, default 0.5)."""
     labels = np.asarray(labels)
     probs = np.asarray(probs)
     predictions = (probs >= threshold).astype(int)
@@ -74,7 +74,7 @@ def compute_classification_metrics(labels, probs, threshold=DECISION_THRESHOLD):
 
 
 def compute_subject_metrics(all_sub_ids, all_trues, all_probs):
-    """计算 subject 级别的聚合指标"""
+    """Compute subject-level aggregated metrics."""
     subject_data_dict = {}
     for subj_id, true_label, prob in zip(all_sub_ids, all_trues, all_probs):
         if subj_id not in subject_data_dict:
@@ -133,7 +133,7 @@ def compute_subject_metrics(all_sub_ids, all_trues, all_probs):
 
 
 def compute_mean_std(values):
-    """计算五折均值的样本标准差 (ddof=1)"""
+    """Compute mean and sample std (ddof=1) over folds."""
     arr = np.array(values, dtype=float)
     if len(arr) == 0:
         return 0.0, 0.0
