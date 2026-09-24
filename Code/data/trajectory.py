@@ -7,7 +7,7 @@ from config import N_TRAJECTORIES
 
 
 def load_trajectory(file_path):
-    """加载注视点轨迹，返回原始长度的tensor"""
+    """Load a fixation-point trajectory; return a tensor of the original length."""
     with open(file_path, 'r') as f:
         lines = [line.strip() for line in f.readlines()]
         traj = [[float(item.split(": ")[1]) if item.split(": ")[1] != "." else 0
@@ -99,7 +99,7 @@ def custom_collate_fn(batch):
 
 
 def augment_trajectory(traj, p=0.5):
-    """轨迹数据增强"""
+    """Apply trajectory data augmentation."""
     if random.random() < p:
         aug_type = random.choice(['noise', 'scale', 'shift'])
         if aug_type == 'noise':
